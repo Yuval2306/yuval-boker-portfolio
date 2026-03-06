@@ -85,7 +85,7 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
                 YUVAL BOKER
               </h1>
               <p className="text-blue-200/80 mt-4 text-xl md:text-2xl font-medium tracking-wide">
-                <span className="text-blue-400">Software Engineer</span> | Systems & Full Stack
+                <span className="text-blue-400">Software Engineer</span> | Backend & Systems
               </p>
 
               <div className="flex flex-wrap gap-4 mt-8 justify-center md:justify-start">
