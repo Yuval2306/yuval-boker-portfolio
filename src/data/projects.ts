@@ -6,7 +6,7 @@ export type Project = {
   repoUrl: string;
   readmeUrl: string;
   image: string;
-  featured?: boolean; // ✅ add this
+  featured?: boolean;
 };
 
 
@@ -125,5 +125,33 @@ export const projects: Project[] = [
     readmeUrl: `${gh("football-results-app")}#readme`,
     image: "/projects/football-results-app.png",
   },
-
+  {
+    slug: "find-my-work",
+    title: "Find My Work",
+    description: "Job search platform to help developers find work opportunities",
+    tags: ["HTML", "JavaScript", "Frontend"],
+    repoUrl: gh("find-my-work"),
+    readmeUrl: `${gh("find-my-work")}#readme`,
+    image: "/projects/find-my-work.png",
+    featured: true,
+  },
+  {
+    slug: "PumP",
+    title: "PumP – AI Fitness Platform",
+    description: "Full-stack fitness app with AI-generated nutrition plans, custom workouts, coach chat, online store, and bilingual support",
+    tags: ["Node.js", "React", "MongoDB", "OpenAI", "Full Stack"],
+    repoUrl: gh("PumP"),
+    readmeUrl: `${gh("PumP")}#readme`,
+    image: "/projects/PumP.png",
+    featured: true,
+  },
+  {
+    slug: "purim-costumes",
+    title: "Purim Costumes",
+    description: "Purim costume ideas web page",
+    tags: ["HTML", "Frontend"],
+    repoUrl: gh("purim-costumes"),
+    readmeUrl: `${gh("purim-costumes")}#readme`,
+    image: "/projects/purim-costumes.png",
+  },
 ];
