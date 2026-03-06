@@ -76,7 +76,7 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-tr from-blue-600 to-cyan-400 rounded-[2.6rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
               <div className="relative h-44 w-44 md:h-52 md:w-52 rounded-[2.5rem] overflow-hidden border border-white/10 bg-slate-950">
-                <img src="/me.jpeg" alt="Yuval Boker" className="h-full w-full object-contain transform group-hover:scale-110 transition-transform duration-700" />
+                <img src="/me.jpeg" alt="Yuval Boker" className="h-full w-full object-cover object-top transform group-hover:scale-110 transition-transform duration-700" />
               </div>
             </div>
 
