@@ -125,6 +125,16 @@ export const projects: Project[] = [
     readmeUrl: `${gh("football-results-app")}#readme`,
     image: "/projects/football-results-app.png",
   },
+    {
+    slug: "HuntBoard",
+    title: "HuntBoard",
+    description: "A smart job application tracker with AI-powered job extraction, analytics dashboard, and follow-up reminders — built for developers actively job hunting.",
+    tags: ["React", "Node.js", "MongoDB", "Express", "Gemini AI", "JWT"],
+    repoUrl: gh("HuntBoard"),
+    readmeUrl: `${gh("HuntBoard")}#readme`,
+    image: "/projects/HuntBoard.png",
+    featured: true,
+  },
   {
     slug: "SlideSummarizer-AI",
     title: "SlideSummarizer AI",
@@ -133,7 +143,6 @@ export const projects: Project[] = [
     repoUrl: gh("SlideSummarizer-AI"),
     readmeUrl: `${gh("SlideSummarizer-AI")}#readme`,
     image: "/projects/SlideSummarizer-AI.png",
-    featured: true,
   },
   {
     slug: "gradebook-app",
