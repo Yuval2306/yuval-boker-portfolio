@@ -135,6 +135,27 @@ export const projects: Project[] = [
     image: "/projects/HuntBoard.png",
     featured: true,
   },
+    {
+    slug: "BasketballShotDetector",
+    title: "Basketball Shot Detector",
+    description: "Real-time basketball shot detection system using computer vision and motion analysis, featuring API integration and deployment in Linux environments",
+    tags: ["Python", "OpenCV", "Computer Vision", "Linux", "API Integration"],
+    repoUrl: gh("BasketballShotDetector"),
+    readmeUrl: `${gh("BasketballShotDetector")}#readme`,
+    image: "/projects/BasketballShotDetector.png",
+    featured: true,
+  },
+    {
+    slug: "Plutocrat",
+    title: "PLUTOCRAT – Billionaire Spending Simulator",
+    description:
+      "Luxury-themed interactive web app where users spend the fortunes of the world’s richest billionaires on yachts, rockets, private islands, sports teams, and more. Features responsive mobile design, bilingual support, dynamic UI updates, and real-time spending simulation.",
+    tags: ["JavaScript", "HTML", "CSS", "Responsive Design", "UI/UX"],
+    repoUrl: gh("Plutocrat"),
+    readmeUrl: `${gh("Plutocrat")}#readme`,
+    image: "/projects/Plutocrat.png",
+    featured: true,
+  },
   {
     slug: "SlideSummarizer-AI",
     title: "SlideSummarizer AI",
