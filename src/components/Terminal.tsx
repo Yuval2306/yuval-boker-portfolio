@@ -4,7 +4,7 @@ import { projects } from "../data/projects";
 type Line = { type: "cmd" | "out"; text: string };
 
 const SKILLS_LINE =
-  "Python · C++ · TypeScript · Node.js · React · SQL · MongoDB · Docker · Linux · System Design · LLM APIs";
+  "Python · C++ · TypeScript · Node.js · React · SQL · MongoDB · AWS · Docker · Linux · System Design · LLMs & AI Agents";
 
 function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "open-linkedin" | "open-cv" } {
   const cmd = raw.trim().toLowerCase();
@@ -14,9 +14,12 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
         out: [
           "Available commands:",
           "  about        who is this guy?",
+          "  onezero      what I do at my day job",
           "  skills       tech stack",
           "  projects     featured work",
           "  experience   professional journey",
+          "  education    degrees & programs",
+          "  neofetch     system info, dev edition",
           "  contact      how to reach me",
           "  github       open my GitHub",
           "  linkedin     open my LinkedIn",
@@ -27,11 +30,47 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
           "  ...and maybe a hidden one or two. Try your luck.",
         ],
       };
+    case "onezero":
+    case "work":
+    case "job":
+      return {
+        out: [
+          "Full Stack Engineer @ Onezero Software Engineering (July 2026 - present)",
+          "",
+          "  • End-to-end features across web & mobile — React, Node.js, TypeScript, Python",
+          "  • Production systems on MongoDB + AWS",
+          "  • AI integrations: prompt design, agent workflows, model-driven features",
+          "  • Working directly with clients — requirements → working software",
+        ],
+      };
+    case "education":
+      return {
+        out: [
+          "→ B.Sc. Computer Science — Tel-Hai College (2022-2025)",
+          "→ Excellenteam Excellence Program — Startup Nation Central (Aug-Sep 2025)",
+          "   intensive C++/Python on Linux · projects with Google, NVIDIA & Check Point engineers",
+          "→ Certifications: Excellenteam in Academia · Hack the Future",
+        ],
+      };
+    case "neofetch":
+      return {
+        out: [
+          "  ██╗   ██╗██████╗    yuval@onezero",
+          "  ╚██╗ ██╔╝██╔══██╗   ─────────────────────────────",
+          "   ╚████╔╝ ██████╔╝   Role:    Full Stack Engineer",
+          "    ╚██╔╝  ██╔══██╗   Stack:   React · Node · TS · Python · C++",
+          "     ██║   ██████╔╝   Cloud:   AWS · MongoDB",
+          "     ╚═╝   ╚═════╝    AI:      LLM APIs · agent workflows",
+          "                      Degree:  B.Sc. CS, Tel-Hai (2022-2025)",
+          "                      Uptime:  shipping code since 2022",
+          "                      Fuel:    coffee ☕ + basketball 🏀",
+        ],
+      };
     case "about":
       return {
         out: [
-          "Yuval Boker — Software Engineer.",
-          "CS graduate (Tel-Hai) · Excellenteam Excellence Program alumnus.",
+          "Yuval Boker — Software Engineer @ Onezero (Full Stack, Backend & AI).",
+          "B.Sc. Computer Science (Tel-Hai) · Excellenteam Excellence Program alumnus.",
           "Presented end-to-end projects to engineers from Google, NVIDIA & Check Point.",
           "Loves: clean code, hard problems, basketball, and shipping things that work.",
         ],
@@ -52,9 +91,11 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
     case "experience":
       return {
         out: [
-          "→ Excellenteam Excellence Program — intensive C++/Python engineering",
-          "→ Teaching Assistant, Probability & Statistics — Tel-Hai (2024-2025)",
-          "→ IDF Commander, Magal Unit (2018-2021)",
+          "→ Full Stack Engineer @ Onezero (2026-present) — web, mobile & AI integrations",
+          "→ Excellenteam Excellence Program — intensive C++/Python engineering (2025)",
+          "→ Teaching Assistant, Probability — Tel-Hai (2025)",
+          "→ B.Sc. Computer Science — Tel-Hai (2022-2025)",
+          "→ IDF Recruits Commander (2018-2021)",
         ],
       };
     case "contact":
@@ -67,7 +108,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
         ],
       };
     case "whoami":
-      return { out: ["visitor (soon-to-be: yuval's colleague?)"] };
+      return { out: ["visitor (soon-to-be: yuval's teammate?)"] };
     case "github":
       return { out: ["Opening GitHub..."], action: "open-github" };
     case "linkedin":
@@ -93,7 +134,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
     case "coffee":
       return { out: ["☕ Brewing... done. Productivity +40%."] };
     case "ls":
-      return { out: ["projects/  skills/  experience/  contact.txt  easter_eggs/"] };
+      return { out: ["onezero/  projects/  skills/  education/  experience/  contact.txt  easter_eggs/"] };
     case "exit":
       return { out: ["There is no escape. You've already scrolled this far 😉"] };
     case "":
@@ -105,7 +146,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
 
 export function Terminal() {
   const [lines, setLines] = useState<Line[]>([
-    { type: "out", text: "Welcome to yuval.sh — the interactive way to know me." },
+    { type: "out", text: "Welcome to yuval.sh — Software Engineer @ Onezero | Full Stack, Backend & AI." },
     { type: "out", text: "Type 'help' to get started." },
   ]);
   const [input, setInput] = useState("");

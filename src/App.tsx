@@ -35,22 +35,23 @@ export default function App() {
   }, []);
 
   const aboutEN = useMemo(() =>
-    `Hi, I’m Yuval Boker, a Computer Science graduate from Tel-Hai Academic College and a software engineer who thrives at the intersection of complex algorithms and reliable system design.
+    `Hi, I’m Yuval Boker — a Software Engineer at Onezero, working full-stack across web and mobile products: building new systems, maintaining production applications, integrating AI capabilities, and working directly with clients to turn requirements into working software.
 
-My background is rooted in the Excellenteam Excellence Program, where I specialized in high-performance software engineering and presented end-to-end projects to senior engineers from Google and NVIDIA. Whether it’s Python, Node.js, or deep-diving into C++, I’m all about building scalable, production-grade solutions.
+My foundation is a B.Sc. in Computer Science from Tel-Hai and the Excellenteam excellence program at Startup Nation Central, where I developed systems in Python and C++ on Linux and presented end-to-end projects to engineers from Google, NVIDIA, and Check Point.
 
-As a former Teaching Assistant in Probability and Statistics, I’ve mastered the art of breaking down complex problems and communicating them clearly. I’m now looking for my next challenge in a Full Stack or Backend development role where I can take ownership and grow with a great R&D team.
+My experience spans both systems and product development — from a user-space file system in C++ and Linux container isolation, to real-time computer vision and full-stack platforms built with React, Node.js, TypeScript, databases, and LLM integrations. I’m especially drawn to complex technical problems at the intersection of software engineering, AI, security, and infrastructure.
 
-Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your team needs someone to ship clean features and boost the company’s athletic stats, let’s talk!`,  []
+Before software, I served as a Recruits Commander in the IDF and worked as a Teaching Assistant at Tel-Hai — so leading people and explaining complex ideas clearly comes with the package.
+
+Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want to talk shop — or hoops — let’s connect!`,  []
   );
 
   const aboutHE = useMemo(() =>
-        `היי, אני יובל בוקר – בוגר מדעי המחשב מתל-חי(כן, שרדתי את הצפון!) ומפתח Full Stack/Backend עם אהבה לקוד נקי ופתרון בעיות מורכבות.
+        `היי, אני יובל בוקר – מהנדס תוכנה ב-Onezero. עובד פול-סטאק על מוצרי ווב ומובייל: בונה מערכות חדשות, מתחזק אפליקציות בפרודקשן, משלב יכולות AI ועובד ישירות מול לקוחות כדי להפוך דרישות לתוכנה עובדת.
 
-הגעתי מעולם ה-Excellenteam, מה שאומר שעברתי בוטקאמפ אינטנסיבי שכלל פרויקטים מול מהנדסים מגוגל וצ'ק פוינט. אני נהנה לשלב בין לוגיקה אלגוריתמית חזקה לבין חשיבה מוצרית שמביאה ערך למשתמשים.
+בוגר מדעי המחשב מתל-חי (כן, שרדתי את הצפון!) ותוכנית המצוינות Excellenteam של Startup Nation Central, שם פיתחתי מערכות ב-Python ו-C++ על לינוקס והצגתי פרויקטים מול מהנדסים מגוגל, NVIDIA וצ'ק פוינט.
 
-חוץ מזה? אני איש של אנשים (הייתי מתרגל בסטטיסטיקה, אז יש לי סבלנות של ברזל), סקרן ברמות וספורטאי בנשמה. אם אתם מחפשים מפתח שלא רק לומד מהר אלא גם מוכן לקחת אחריות על ה-Vibe בצוות, אני האיש שלכם.
-אני מחפש את ההזדמנות הראשונה שלי להוכיח שג'וניור יכול להביא אימפקט משמעותי מהיום הראשון.`, []
+חוץ מזה? אני איש של אנשים (הייתי מפקד טירונים בצבא ומתרגל בתל-חי, אז יש לי סבלנות של ברזל), סקרן ברמות וספורטאי בנשמה. הכי מעניין אותי החיבור בין הנדסת תוכנה, AI, אבטחה ותשתיות – ותמיד שמח לדבר על בעיות טכניות מורכבות (או על כדורסל).`, []
   );
 
   const githubUrl = "https://github.com/Yuval2306";
@@ -66,8 +67,8 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
     "Node.js", "Flask", "REST APIs", "Express.js", "PostgreSQL", "MongoDB", "Microservices",
     "Algorithms", "Data Structures", "Memory Management", "Performance Optimization",
     "Operating Systems", "Multithreading", "System Design",
-    "Linux", "Docker", "Git & GitHub", "Bash Scripting", "Render/Vercel (Deployment)",
-    "LLM APIs (Gemini/OpenAI)", "RAG (Retrieval-Augmented Generation)",
+    "Linux", "Docker", "AWS", "Git & GitHub", "Bash Scripting", "Render/Vercel (Deployment)",
+    "LLM APIs (Gemini/OpenAI)", "RAG (Retrieval-Augmented Generation)", "AI Agents & Workflows",
     "Pandas", "NumPy", "Prompt Engineering",
     "Object-Oriented Programming (OOP)", "Clean Code", "Unit Testing", "Debugging", "Agile"
   ], []);
@@ -118,7 +119,7 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
 
             <div className="mt-6 text-xl md:text-3xl font-medium text-slate-300 h-10 md:h-12" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.8s both" }}>
               <span className="text-blue-400 font-bold">
-                <Typewriter words={["Software Engineer", "Backend Developer", "Systems Enthusiast", "Full Stack Developer", "C++ / Python / Node.js"]} />
+                <Typewriter words={["Software Engineer", "Full Stack & Backend", "AI Integrations", "Systems Enthusiast", "C++ / Python / Node.js"]} />
               </span>
             </div>
 
@@ -341,29 +342,49 @@ function ExperienceContent() {
       <div className="space-y-10">
         <div className="relative pl-8 border-l-2 border-blue-500/30">
           <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-          <h4 className="text-xl font-bold text-white">Excellenteam Excellence Program</h4>
-          <p className="text-blue-400 text-sm mb-2 font-mono italic">Startup Nation Central | Intensive Engineering</p>
+          <h4 className="text-xl font-bold text-white">Full Stack Engineer <span className="text-blue-400">@ Onezero</span></h4>
+          <p className="text-blue-400 text-sm mb-2 font-mono italic">Onezero Software Engineering | July 2026 - Present</p>
           <p className="text-slate-300 text-sm leading-relaxed">
-            Selected for an elite software engineering program. Focused on <strong>Advanced C++ & Python</strong>, System Design, and performance-aware development.
+            Full-stack development across <strong>web and mobile</strong>: building new products, maintaining live production systems, and integrating AI capabilities.
+            Developing end-to-end features with <strong>React, Node.js, TypeScript, and Python</strong>, working with <strong>MongoDB and AWS</strong>, and integrating LLM capabilities — prompt design, agent workflows, and model-driven features.
+            Working directly with clients to translate business needs into technical tasks.
+          </p>
+        </div>
+
+        <div className="relative pl-8 border-l-2 border-blue-500/30">
+          <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500/70 shadow-[0_0_10px_rgba(59,130,246,0.4)]" />
+          <h4 className="text-xl font-bold text-white">Excellenteam Excellence Program</h4>
+          <p className="text-blue-400 text-sm mb-2 font-mono italic">Startup Nation Central | Aug - Sep 2025</p>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            Selected for an elite software engineering program. Focused on <strong>Advanced C++ & Python</strong> on Linux, System Design, and performance-aware development.
             Presented end-to-end projects to senior engineers from <strong>Google, NVIDIA, and Check Point</strong>.
           </p>
         </div>
 
         <div className="relative pl-8 border-l-2 border-slate-700">
           <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-700" />
-          <h4 className="text-xl font-bold text-white">Teaching Assistant</h4>
-          <p className="text-slate-400 text-sm mb-2 font-mono">Tel-Hai Academic College | 2024 - 2025</p>
+          <h4 className="text-xl font-bold text-white">B.Sc. Computer Science</h4>
+          <p className="text-slate-400 text-sm mb-2 font-mono">Tel-Hai College | 2022 - 2025</p>
           <p className="text-slate-300 text-sm leading-relaxed">
-            Guided students in <strong>Probability and Statistics</strong>. Focused on analytical problem-solving, debugging strategies, and simplifying complex mathematical concepts.
+            Bachelor of Science in Computer Science. Also served as a <strong>Teaching Assistant</strong> in Probability (2025) — reviewing assignments, giving clear feedback, and mentoring students.
           </p>
         </div>
 
         <div className="relative pl-8 border-l-2 border-slate-700">
           <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-700" />
-          <h4 className="text-xl font-bold text-white">Military Service - Commander</h4>
-          <p className="text-slate-400 text-sm mb-2 font-mono">IDF, Magal Unit | 2018 - 2021</p>
+          <h4 className="text-xl font-bold text-white">Shift Manager</h4>
+          <p className="text-slate-400 text-sm mb-2 font-mono">Rikushet | 2024 - 2025</p>
           <p className="text-slate-300 text-sm leading-relaxed">
-            Led and trained teams in high-pressure environments. Developed strong leadership, accountability, and operational coordination skills.
+            Managed team operations, scheduling, and task delegation in a dynamic retail environment — leadership and multitasking skills I bring into software development.
+          </p>
+        </div>
+
+        <div className="relative pl-8 border-l-2 border-slate-700">
+          <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-700" />
+          <h4 className="text-xl font-bold text-white">First Sergeant, Recruits Commander</h4>
+          <p className="text-slate-400 text-sm mb-2 font-mono">IDF | Nov 2018 - Jul 2021</p>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            Led training and operations as a Recruits Commander, progressing through platoon and company leadership roles. Responsible for team performance, discipline, and operational readiness.
           </p>
         </div>
       </div>
