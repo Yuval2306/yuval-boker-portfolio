@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Heart, MessageCircle, ExternalLink, BookOpen, Eye } from "lucide-react";
 import type { Project } from "../data/projects";
 import { supabase } from "../lib/supabase";
+import { burstConfetti } from "../lib/confetti";
 
 type Stats = { likes: number; clicks: number };
 
@@ -114,7 +115,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
           <button
             disabled={loading}
-            onClick={onLike}
+            onClick={(e) => { burstConfetti(e.clientX, e.clientY); void onLike(); }}
             className="ml-auto px-3 py-2 rounded-xl bg-white/5 text-slate-100 border border-white/10 inline-flex items-center gap-2 hover:bg-rose-500/10 hover:border-rose-500/40 hover:text-rose-300 transition-all"
           >
             <Heart size={16} /> {stats.likes}

@@ -3,6 +3,7 @@ import { Heart, MessageCircle, ExternalLink, BookOpen, Eye, ChevronDown } from "
 import type { Project } from "../data/projects";
 import { useProjectStats } from "../hooks/useProjectStats";
 import { Tilt } from "./Tilt";
+import { burstConfetti } from "../lib/confetti";
 
 export function FeaturedShowcase({ project, index }: { project: Project; index: number }) {
   const { stats, comments, loading, like, openRepo, addComment } = useProjectStats(project.slug, project.repoUrl);
@@ -72,7 +73,7 @@ export function FeaturedShowcase({ project, index }: { project: Project; index: 
           </a>
           <button
             disabled={loading}
-            onClick={like}
+            onClick={(e) => { burstConfetti(e.clientX, e.clientY); like(); }}
             className="px-5 py-2.5 rounded-full bg-white/5 text-slate-100 border border-white/10 inline-flex items-center gap-2 hover:bg-rose-500/10 hover:border-rose-500/40 hover:text-rose-300 transition-all"
           >
             <Heart size={16} /> {stats.likes}

@@ -19,6 +19,10 @@ import { Reveal } from "./components/Reveal";
 import { Typewriter } from "./components/Typewriter";
 import { FeaturedShowcase } from "./components/FeaturedShowcase";
 import { ScrollProgress } from "./components/ScrollProgress";
+import { ParticleName } from "./components/ParticleName";
+import { Terminal } from "./components/Terminal";
+import { Magnetic } from "./components/Magnetic";
+import { CursorGlow } from "./components/CursorGlow";
 
 const Hero3D = lazy(() => import("./components/Hero3D"));
 
@@ -80,6 +84,7 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
   return (
     <div className="min-h-screen relative bg-[#020617] text-slate-200 font-sans">
       <ScrollProgress />
+      <CursorGlow />
       <TechBackground />
 
       {/* ===== 3D HERO ===== */}
@@ -95,7 +100,7 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
         <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none" />
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pointer-events-none">
-          <div className="pointer-events-auto flex flex-col items-center">
+          <div className="pointer-events-auto flex flex-col items-center w-full">
             <div className="relative group" style={{ animation: "fadeInDown 1s cubic-bezier(0.16,1,0.3,1) 0.2s both" }}>
               <div className="absolute -inset-2 rounded-full bg-gradient-to-tr from-blue-600 via-cyan-400 to-blue-600 blur-md opacity-60 group-hover:opacity-90 transition duration-700 animate-spin-slow" />
               <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden border-2 border-white/20 bg-slate-950 shadow-[0_0_60px_rgba(59,130,246,0.35)]">
@@ -107,9 +112,9 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
               👋 Hey, I'm
             </p>
 
-            <h1 className="mt-2 text-6xl md:text-9xl font-black tracking-tighter bg-gradient-to-r from-white via-blue-100 to-blue-400 bg-clip-text text-transparent italic drop-shadow-[0_0_35px_rgba(59,130,246,0.35)]" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.6s both" }}>
-              YUVAL BOKER
-            </h1>
+            <div className="mt-2 w-full" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.6s both" }}>
+              <ParticleName text="YUVAL BOKER" />
+            </div>
 
             <div className="mt-6 text-xl md:text-3xl font-medium text-slate-300 h-10 md:h-12" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.8s both" }}>
               <span className="text-blue-400 font-bold">
@@ -118,15 +123,21 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
             </div>
 
             <div className="flex flex-wrap gap-4 mt-10 justify-center" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 1s both" }}>
-              <a href={githubUrl} target="_blank" rel="noreferrer" className="px-8 py-3 rounded-full bg-white text-slate-950 font-bold flex items-center gap-2 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.35)] transition-all">
-                <Github size={20} /> GitHub
-              </a>
-              <a href={linkedinUrl} target="_blank" rel="noreferrer" className="px-8 py-3 rounded-full bg-blue-600/20 text-blue-100 border border-blue-500/40 font-bold flex items-center gap-2 hover:bg-blue-600/40 hover:scale-105 backdrop-blur transition-all">
-                <Linkedin size={20} /> LinkedIn
-              </a>
-              <button onClick={scrollToContent} className="px-8 py-3 rounded-full bg-cyan-500/10 text-cyan-200 border border-cyan-400/30 font-bold flex items-center gap-2 hover:bg-cyan-500/25 hover:scale-105 backdrop-blur transition-all">
-                <ArrowDown size={20} /> Explore
-              </button>
+              <Magnetic>
+                <a href={githubUrl} target="_blank" rel="noreferrer" className="px-8 py-3 rounded-full bg-white text-slate-950 font-bold flex items-center gap-2 hover:shadow-[0_0_30px_rgba(255,255,255,0.35)] transition-shadow">
+                  <Github size={20} /> GitHub
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href={linkedinUrl} target="_blank" rel="noreferrer" className="px-8 py-3 rounded-full bg-blue-600/20 text-blue-100 border border-blue-500/40 font-bold flex items-center gap-2 hover:bg-blue-600/40 backdrop-blur transition-colors">
+                  <Linkedin size={20} /> LinkedIn
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <button onClick={scrollToContent} className="px-8 py-3 rounded-full bg-cyan-500/10 text-cyan-200 border border-cyan-400/30 font-bold flex items-center gap-2 hover:bg-cyan-500/25 backdrop-blur transition-colors">
+                  <ArrowDown size={20} /> Explore
+                </button>
+              </Magnetic>
             </div>
           </div>
         </div>
@@ -164,6 +175,17 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If your tea
         {/* Skills marquee */}
         <Reveal delay={0.15}>
           <SkillsMarquee skills={skills} />
+        </Reveal>
+
+        {/* Interactive terminal */}
+        <Reveal delay={0.1}>
+          <div className="mt-20">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 flex items-center gap-4">
+              <span className="h-px w-8 bg-emerald-500"></span>
+              <span className="bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent font-mono">$ talk_to_me --terminal</span>
+            </h2>
+            <Terminal />
+          </div>
         </Reveal>
 
         <section className="mt-24 space-y-24">
