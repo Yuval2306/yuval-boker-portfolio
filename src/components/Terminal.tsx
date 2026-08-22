@@ -176,7 +176,7 @@ export function Terminal() {
 
     if (action === "open-github") window.open("https://github.com/Yuval2306", "_blank", "noopener,noreferrer");
     if (action === "open-linkedin") window.open("https://www.linkedin.com/in/yuval-boker-43792537b/", "_blank", "noopener,noreferrer");
-    if (action === "open-cv") window.location.href = `mailto:yuvalboker588@gmail.com?subject=${encodeURIComponent("CV Request — Yuval Boker")}&body=${encodeURIComponent("Hi Yuval,\n\nWe would be happy to receive your CV.\n\nBest regards,")}`;
+    if (action === "open-cv") window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=yuvalboker588@gmail.com&su=${encodeURIComponent("CV Request — Yuval Boker")}&body=${encodeURIComponent("Hi Yuval,\n\nWe would be happy to receive your CV.\n\nBest regards,")}`, "_blank", "noopener,noreferrer");
 
     if (raw.trim()) {
       setHistory((h) => [raw, ...h]);

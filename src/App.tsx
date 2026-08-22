@@ -334,7 +334,9 @@ function ExperienceContent() {
           <p className="text-slate-400 text-sm mt-1">Full CV available for specific roles</p>
         </div>
         <a
-          href={`mailto:yuvalboker588@gmail.com?subject=${encodeURIComponent("CV Request — Yuval Boker")}&body=${encodeURIComponent("Hi Yuval,\n\nWe would be happy to receive your CV.\n\nBest regards,")}`}
+          href={`https://mail.google.com/mail/?view=cm&fs=1&to=yuvalboker588@gmail.com&su=${encodeURIComponent("CV Request — Yuval Boker")}&body=${encodeURIComponent("Hi Yuval,\n\nWe would be happy to receive your CV.\n\nBest regards,")}`}
+          target="_blank"
+          rel="noreferrer"
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full font-bold transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20"
         >
           <Mail size={18} /> Request CV
@@ -353,10 +355,10 @@ function ExperienceContent() {
           </p>
         </div>
 
-        <div className="relative pl-8 border-l-2 border-blue-500/30">
-          <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500/70 shadow-[0_0_10px_rgba(59,130,246,0.4)]" />
+        <div className="relative pl-8 border-l-2 border-slate-700">
+          <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-700" />
           <h4 className="text-xl font-bold text-white">Excellenteam Excellence Program</h4>
-          <p className="text-blue-400 text-sm mb-2 font-mono italic">Startup Nation Central | Aug - Sep 2025</p>
+          <p className="text-slate-400 text-sm mb-2 font-mono">Startup Nation Central | Aug - Sep 2025</p>
           <p className="text-slate-300 text-sm leading-relaxed">
             Selected for an elite software engineering program. Focused on <strong>Advanced C++ & Python</strong> on Linux, System Design, and performance-aware development.
             Presented end-to-end projects to senior engineers from <strong>Google, NVIDIA, and Check Point</strong>.
