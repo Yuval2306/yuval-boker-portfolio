@@ -23,7 +23,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
           "  contact      how to reach me",
           "  github       open my GitHub",
           "  linkedin     open my LinkedIn",
-          "  cv           download my CV",
+          "  cv           request my CV by email",
           "  whoami       identity check",
           "  clear        clear the terminal",
           "",
@@ -93,7 +93,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
         out: [
           "→ Full Stack Engineer @ Onezero (2026-present) — web, mobile & AI integrations",
           "→ Excellenteam Excellence Program — intensive C++/Python engineering (2025)",
-          "→ Teaching Assistant, Probability — Tel-Hai (2025)",
+          "→ Teaching Assistant, Probability — Tel-Hai (Jan-Aug 2025)",
           "→ B.Sc. Computer Science — Tel-Hai (2022-2025)",
           "→ IDF Recruits Commander (2018-2021)",
         ],
@@ -114,7 +114,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
     case "linkedin":
       return { out: ["Opening LinkedIn..."], action: "open-linkedin" };
     case "cv":
-      return { out: ["Downloading CV..."], action: "open-cv" };
+      return { out: ["Opening email — request the CV directly from Yuval..."], action: "open-cv" };
     case "clear":
       return { out: [], action: "clear" };
     case "sudo hire-yuval":
@@ -176,7 +176,7 @@ export function Terminal() {
 
     if (action === "open-github") window.open("https://github.com/Yuval2306", "_blank", "noopener,noreferrer");
     if (action === "open-linkedin") window.open("https://www.linkedin.com/in/yuval-boker-43792537b/", "_blank", "noopener,noreferrer");
-    if (action === "open-cv") window.open("/Yuval_Boker_CV.pdf", "_blank", "noopener,noreferrer");
+    if (action === "open-cv") window.location.href = `mailto:yuvalboker588@gmail.com?subject=${encodeURIComponent("CV Request — Yuval Boker")}&body=${encodeURIComponent("Hi Yuval,\n\nWe would be happy to receive your CV.\n\nBest regards,")}`;
 
     if (raw.trim()) {
       setHistory((h) => [raw, ...h]);

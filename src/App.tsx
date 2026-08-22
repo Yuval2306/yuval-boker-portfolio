@@ -10,7 +10,6 @@ import {
   ChevronDown,
   Search,
   Briefcase,
-  Download,
   ArrowDown
 } from "lucide-react";
 import { projects } from "./data/projects";
@@ -334,8 +333,11 @@ function ExperienceContent() {
           <h3 className="text-3xl font-bold text-blue-400">Professional Journey</h3>
           <p className="text-slate-400 text-sm mt-1">Full CV available for specific roles</p>
         </div>
-        <a href="/Yuval_Boker_CV.pdf" download className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full font-bold transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20">
-          <Download size={18} /> Download PDF
+        <a
+          href={`mailto:yuvalboker588@gmail.com?subject=${encodeURIComponent("CV Request — Yuval Boker")}&body=${encodeURIComponent("Hi Yuval,\n\nWe would be happy to receive your CV.\n\nBest regards,")}`}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full font-bold transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20"
+        >
+          <Mail size={18} /> Request CV
         </a>
       </div>
 
@@ -363,10 +365,19 @@ function ExperienceContent() {
 
         <div className="relative pl-8 border-l-2 border-slate-700">
           <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-700" />
+          <h4 className="text-xl font-bold text-white">Teaching Assistant</h4>
+          <p className="text-slate-400 text-sm mb-2 font-mono">Tel-Hai College | Jan 2025 - Aug 2025</p>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            Assisted students in a <strong>Probability</strong> course — reviewing assignments, ensuring accurate evaluation, and giving clear feedback to help students improve. Developed strong communication and mentoring skills.
+          </p>
+        </div>
+
+        <div className="relative pl-8 border-l-2 border-slate-700">
+          <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-700" />
           <h4 className="text-xl font-bold text-white">B.Sc. Computer Science</h4>
           <p className="text-slate-400 text-sm mb-2 font-mono">Tel-Hai College | 2022 - 2025</p>
           <p className="text-slate-300 text-sm leading-relaxed">
-            Bachelor of Science in Computer Science. Also served as a <strong>Teaching Assistant</strong> in Probability (2025) — reviewing assignments, giving clear feedback, and mentoring students.
+            Bachelor of Science in Computer Science.
           </p>
         </div>
 
