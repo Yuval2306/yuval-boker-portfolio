@@ -347,11 +347,20 @@ function ExperienceContent() {
         <div className="relative pl-8 border-l-2 border-blue-500/30">
           <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
           <h4 className="text-xl font-bold text-white">Full Stack Engineer <span className="text-blue-400">@ Onezero</span></h4>
-          <p className="text-blue-400 text-sm mb-2 font-mono italic">Onezero Software Engineering | July 2026 - Present</p>
+          <p className="text-blue-400 text-sm mb-2 font-mono italic">Onezero Software Engineering | Jan 2026 - Present</p>
           <p className="text-slate-300 text-sm leading-relaxed">
             Full-stack development across <strong>web and mobile</strong>: building new products, maintaining live production systems, and integrating AI capabilities.
             Developing end-to-end features with <strong>React, Node.js, TypeScript, and Python</strong>, working with <strong>MongoDB and AWS</strong>, and integrating LLM capabilities — prompt design, agent workflows, and model-driven features.
             Working directly with clients to translate business needs into technical tasks.
+          </p>
+        </div>
+
+        <div className="relative pl-8 border-l-2 border-slate-700">
+          <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-700" />
+          <h4 className="text-xl font-bold text-white">Personal Trainer</h4>
+          <p className="text-slate-400 text-sm mb-2 font-mono">Freelance, Part-time | Oct 2025 - Present</p>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            Designed and adapted personalized training programs based on individual goals and progress. Worked directly with clients to track results, adjust plans, and maintain long-term motivation.
           </p>
         </div>
 

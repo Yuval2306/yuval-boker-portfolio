@@ -35,7 +35,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
     case "job":
       return {
         out: [
-          "Full Stack Engineer @ Onezero Software Engineering (July 2026 - present)",
+          "Full Stack Engineer @ Onezero Software Engineering (Jan 2026 - present)",
           "",
           "  • End-to-end features across web & mobile — React, Node.js, TypeScript, Python",
           "  • Production systems on MongoDB + AWS",
@@ -91,7 +91,8 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
     case "experience":
       return {
         out: [
-          "→ Full Stack Engineer @ Onezero (2026-present) — web, mobile & AI integrations",
+          "→ Full Stack Engineer @ Onezero (Jan 2026-present) — web, mobile & AI integrations",
+          "→ Personal Trainer, freelance (Oct 2025-present) — personalized programs & client coaching",
           "→ Excellenteam Excellence Program — intensive C++/Python engineering (2025)",
           "→ Teaching Assistant, Probability — Tel-Hai (Jan-Aug 2025)",
           "→ B.Sc. Computer Science — Tel-Hai (2022-2025)",
