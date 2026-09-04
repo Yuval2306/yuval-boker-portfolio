@@ -22,15 +22,22 @@ import { ParticleName } from "./components/ParticleName";
 import { Terminal } from "./components/Terminal";
 import { Magnetic } from "./components/Magnetic";
 import { CursorGlow } from "./components/CursorGlow";
+import { Lanyard } from "./components/Lanyard";
+import { LiveCursors } from "./components/LiveCursors";
+import { HoopsGame } from "./components/HoopsGame";
 
 const Hero3D = lazy(() => import("./components/Hero3D"));
 
 export default function App() {
   const [open, setOpen] = useState<null | "about-en" | "about-he" | "contact" | "resume" | "skills">(null);
+  const [hoopsOpen, setHoopsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const openHoops = () => setHoopsOpen(true);
+    window.addEventListener("open-hoops", openHoops);
+    return () => window.removeEventListener("open-hoops", openHoops);
   }, []);
 
   const aboutEN = useMemo(() =>
@@ -85,6 +92,8 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
     <div className="min-h-screen relative bg-[#020617] text-slate-200 font-sans">
       <ScrollProgress />
       <CursorGlow />
+      <LiveCursors />
+      <Lanyard />
       <TechBackground />
 
       {/* ===== 3D HERO ===== */}
@@ -101,28 +110,28 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pointer-events-none">
           <div className="pointer-events-auto flex flex-col items-center w-full">
-            <div className="relative group" style={{ animation: "fadeInDown 1s cubic-bezier(0.16,1,0.3,1) 0.2s both" }}>
+            <div data-fall className="relative group" style={{ animation: "fadeInDown 1s cubic-bezier(0.16,1,0.3,1) 0.2s both" }}>
               <div className="absolute -inset-2 rounded-full bg-gradient-to-tr from-blue-600 via-cyan-400 to-blue-600 blur-md opacity-60 group-hover:opacity-90 transition duration-700 animate-spin-slow" />
               <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden border-2 border-white/20 bg-slate-950 shadow-[0_0_60px_rgba(59,130,246,0.35)]">
                 <img src="/me.jpeg" alt="Yuval Boker" className="h-full w-full object-cover object-top" />
               </div>
             </div>
 
-            <p className="mt-8 text-blue-200/90 text-xl md:text-2xl font-medium" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.45s both" }}>
+            <p data-fall className="mt-8 text-blue-200/90 text-xl md:text-2xl font-medium" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.45s both" }}>
               👋 Hey, I'm
             </p>
 
-            <div className="mt-2 w-full" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.6s both" }}>
+            <div data-fall className="mt-2 w-full" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.6s both" }}>
               <ParticleName text="YUVAL BOKER" />
             </div>
 
-            <div className="mt-6 text-xl md:text-3xl font-medium text-slate-300 h-10 md:h-12" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.8s both" }}>
+            <div data-fall className="mt-6 text-xl md:text-3xl font-medium text-slate-300 h-10 md:h-12" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.8s both" }}>
               <span className="text-blue-400 font-bold">
                 <Typewriter words={["Software Engineer", "Full Stack & Backend", "AI Integrations", "Systems Enthusiast", "C++ / Python / Node.js"]} />
               </span>
             </div>
 
-            <div className="flex flex-wrap gap-4 mt-10 justify-center" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 1s both" }}>
+            <div data-fall className="flex flex-wrap gap-4 mt-10 justify-center" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 1s both" }}>
               <Magnetic>
                 <a href={githubUrl} target="_blank" rel="noreferrer" className="px-8 py-3 rounded-full bg-white text-slate-950 font-bold flex items-center gap-2 hover:shadow-[0_0_30px_rgba(255,255,255,0.35)] transition-shadow">
                   <Github size={20} /> GitHub
@@ -224,6 +233,18 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
           </div>
         </section>
 
+        {/* floating basketball button */}
+        <button
+          onClick={() => setHoopsOpen(true)}
+          className="fixed bottom-6 right-6 z-[90] h-14 w-14 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-xl shadow-lg text-2xl hover:scale-110 hover:border-orange-400/50 hover:shadow-[0_0_25px_rgba(251,146,60,0.3)] transition-all animate-bounce-gentle"
+          title="Shoot some hoops"
+          aria-label="Play basketball mini game"
+        >
+          🏀
+        </button>
+
+        {hoopsOpen && <HoopsGame onClose={() => setHoopsOpen(false)} />}
+
         {open && (
           <Modal onClose={() => setOpen(null)}>
             {open === "about-en" && <div className="prose prose-invert"><h3 className="text-3xl font-bold mb-6 text-blue-400">About Me</h3><p className="whitespace-pre-line leading-relaxed text-slate-300 text-lg">{aboutEN}</p></div>}
@@ -234,7 +255,7 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
           </Modal>
         )}
 
-        <footer className="mt-32 pb-12 text-center space-y-3">
+        <footer data-fall className="mt-32 pb-12 text-center space-y-3">
           <div className="flex justify-center gap-4">
             <a href={githubUrl} target="_blank" rel="noreferrer" className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:border-blue-500/40 hover:bg-blue-600/10 transition-all"><Github size={18} /></a>
             <a href={linkedinUrl} target="_blank" rel="noreferrer" className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:border-blue-500/40 hover:bg-blue-600/10 transition-all"><Linkedin size={18} /></a>
@@ -521,6 +542,8 @@ function TechBackground() {
         .animate-bounce-slow { animation: bounceSlow 2s ease-in-out infinite; }
         .animate-marquee { animation: marquee 45s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
+        @keyframes bounceGentle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .animate-bounce-gentle { animation: bounceGentle 2.5s ease-in-out infinite; }
 
         html { scroll-behavior: smooth; }
 
