@@ -39,12 +39,6 @@ export function ParticleName({ text = "YUVAL BOKER" }: { text?: string }) {
     function build() {
       W = wrap!.clientWidth;
 
-      // zero-width container (hidden tab, prerender) — skip; resize will rebuild
-      if (W < 10) {
-        particles = [];
-        return;
-      }
-
       // pick a font size, then shrink it until the rendered text truly fits (italic overhang included)
       const off = document.createElement("canvas");
       const octx = off.getContext("2d")!;

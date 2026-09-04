@@ -31,7 +31,6 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      data-fall
       className={className}
       style={{
         opacity: visible ? 1 : 0,
