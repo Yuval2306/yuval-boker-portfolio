@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { projects } from "../data/projects";
+import { selfDestruct } from "../lib/destruct";
 
 type Line = { type: "cmd" | "out"; text: string };
 
 const SKILLS_LINE =
   "Python · C++ · TypeScript · Node.js · React · SQL · MongoDB · AWS · Docker · Linux · System Design · LLMs & AI Agents";
 
-function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "open-linkedin" | "open-cv" } {
+function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "open-linkedin" | "open-cv" | "self-destruct" | "play" } {
   const cmd = raw.trim().toLowerCase();
   switch (cmd) {
     case "help":
@@ -25,6 +26,7 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
           "  linkedin     open my LinkedIn",
           "  cv           request my CV by email",
           "  whoami       identity check",
+          "  play         🏀 shoot some hoops",
           "  clear        clear the terminal",
           "",
           "  ...and maybe a hidden one or two. Try your luck.",
@@ -132,6 +134,16 @@ function run(raw: string): { out: string[]; action?: "clear" | "open-github" | "
       };
     case "sudo":
       return { out: ["usage: sudo hire-yuval"] };
+    case "play":
+      return { out: ["Launching Shoot to Hire 🏀 — good luck..."], action: "play" };
+    case "rm -rf /":
+    case "rm -rf":
+      return { out: ["rm: cannot remove '/': Permission denied", "(this portfolio is protected... unless you try sudo)"] };
+    case "sudo rm -rf /":
+      return {
+        out: ["[sudo] password for visitor: ********", "access granted. deleting everything..."],
+        action: "self-destruct",
+      };
     case "coffee":
       return { out: ["☕ Brewing... done. Productivity +40%."] };
     case "ls":
@@ -149,6 +161,7 @@ export function Terminal() {
   const [lines, setLines] = useState<Line[]>([
     { type: "out", text: "Welcome to yuval.sh — Software Engineer @ Onezero | Full Stack, Backend & AI." },
     { type: "out", text: "Type 'help' to get started." },
+    { type: "out", text: "⚠ whatever you do, do NOT type 'sudo rm -rf /' — it might crash the site :)" },
   ]);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -178,6 +191,8 @@ export function Terminal() {
     if (action === "open-github") window.open("https://github.com/Yuval2306", "_blank", "noopener,noreferrer");
     if (action === "open-linkedin") window.open("https://www.linkedin.com/in/yuval-boker-43792537b/", "_blank", "noopener,noreferrer");
     if (action === "open-cv") window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=yuvalboker588@gmail.com&su=${encodeURIComponent("CV Request — Yuval Boker")}&body=${encodeURIComponent("Hi Yuval,\n\nWe would be happy to receive your CV.\n\nBest regards,")}`, "_blank", "noopener,noreferrer");
+    if (action === "self-destruct") setTimeout(() => void selfDestruct(), 700);
+    if (action === "play") window.dispatchEvent(new CustomEvent("open-hoops"));
 
     if (raw.trim()) {
       setHistory((h) => [raw, ...h]);
