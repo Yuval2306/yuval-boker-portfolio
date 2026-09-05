@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import cues from "../data/welcomeCues.json";
+import { attachVoiceAnalyser } from "../lib/voiceLevel";
+import { companySlug, getCompanyFromUrl } from "../lib/company";
 
 // Spoken intro: a pre-recorded deep announcer voice (public/welcome.mp3)
 // plays when the visitor enters (or on their first click/tap, since browsers
 // block sound before a gesture) — once per session — with timed subtitles.
-// The 🔊 button replays the intro anytime.
+// With ?for=Company in the URL, a personalized clip ("Welcome, Wix team...")
+// plays first, then the regular narration continues. 🔊 replays anytime.
 
-const GUARD_KEY = "welcomed-v5";
+const GUARD_KEY = "welcomed-v6";
+const MAIN_SKIP_AFTER_COMPANY = 4.0; // main narration's own "Welcome..." sentence ends here
 
 type Cue = { start: number; end: number; text: string };
 const CUES = cues as Cue[];
@@ -18,15 +22,31 @@ function prettify(text: string) {
 export function WelcomeGreeting() {
   const [subtitle, setSubtitle] = useState<string | null>(null);
   const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const mainRef = useRef<HTMLAudioElement | null>(null);
+  const companyRef = useRef<HTMLAudioElement | null>(null);
+  const companyNameRef = useRef<string | null>(null);
+  const companyReadyRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const audio = new Audio("/welcome.mp3");
-    audio.preload = "auto";
-    audio.volume = 1;
-    audioRef.current = audio;
+    const main = new Audio("/welcome.mp3");
+    main.preload = "auto";
+    main.volume = 1;
+    mainRef.current = main;
+
+    // personalized clip, if this is a company link and the clip exists
+    const company = getCompanyFromUrl();
+    companyNameRef.current = company;
+    let companyAudio: HTMLAudioElement | null = null;
+    if (company) {
+      companyAudio = new Audio(`/intro/${companySlug(company)}.mp3`);
+      companyAudio.preload = "auto";
+      companyAudio.volume = 1;
+      companyAudio.addEventListener("canplaythrough", () => { companyReadyRef.current = true; }, { once: true });
+      companyAudio.addEventListener("error", () => { companyReadyRef.current = false; });
+      companyRef.current = companyAudio;
+    }
 
     let alreadyWelcomed = false;
     try {
@@ -40,8 +60,8 @@ export function WelcomeGreeting() {
       } catch { /* ignore */ }
       removeGestureListeners();
     };
-    const onTime = () => {
-      const t = audio.currentTime;
+    const onMainTime = () => {
+      const t = main.currentTime;
       let current: Cue | null = null;
       for (const c of CUES) if (t >= c.start) current = c;
       setSubtitle(current && t <= current.end ? prettify(current.text) : null);
@@ -52,53 +72,118 @@ export function WelcomeGreeting() {
     };
     const onPause = () => setPlaying(false);
 
-    audio.addEventListener("playing", onPlaying);
-    audio.addEventListener("timeupdate", onTime);
-    audio.addEventListener("ended", onEnded);
-    audio.addEventListener("pause", onPause);
+    main.addEventListener("playing", onPlaying);
+    main.addEventListener("timeupdate", onMainTime);
+    main.addEventListener("ended", onEnded);
+    main.addEventListener("pause", onPause);
 
-    // must run synchronously inside the user gesture
-    function attempt() {
-      if (!audio.paused) return;
-      audio.currentTime = 0;
-      const p = audio.play();
-      if (p && typeof p.catch === "function") p.catch(() => { /* blocked until a gesture — keep waiting */ });
+    // company clip → then the main narration continues (skipping its own "Welcome" line)
+    const onCompanyEnded = () => {
+      main.currentTime = MAIN_SKIP_AFTER_COMPANY;
+      const p = main.play();
+      if (p && typeof p.catch === "function") {
+        p.catch(() => {
+          // continuation blocked (company clip autoplayed with no gesture yet):
+          // resume the main narration on the visitor's next interaction
+          const resume = () => {
+            window.removeEventListener("pointerdown", resume);
+            window.removeEventListener("keydown", resume);
+            window.removeEventListener("touchstart", resume);
+            if (main.paused) {
+              main.currentTime = MAIN_SKIP_AFTER_COMPANY;
+              void main.play().catch(() => {});
+            }
+          };
+          window.addEventListener("pointerdown", resume);
+          window.addEventListener("keydown", resume);
+          window.addEventListener("touchstart", resume, { passive: true });
+        });
+      }
+    };
+    if (companyAudio) {
+      companyAudio.addEventListener("playing", () => {
+        setPlaying(true);
+        setSubtitle(`Welcome, ${company} team... to the portfolio of Yuval Boker.`);
+        try {
+          sessionStorage.setItem(GUARD_KEY, "1");
+        } catch { /* ignore */ }
+        removeGestureListeners();
+      });
+      companyAudio.addEventListener("ended", onCompanyEnded);
+      companyAudio.addEventListener("pause", () => { if (main.paused) setPlaying(false); });
     }
 
+    // must run synchronously inside the user gesture
+    function attempt(fromGesture: boolean) {
+      if (fromGesture) {
+        attachVoiceAnalyser(main); // lets the 3D scene pulse with the voice
+        if (companyAudio) attachVoiceAnalyser(companyAudio);
+      }
+      if (!main.paused || (companyAudio && !companyAudio.paused)) return;
+      if (companyAudio && companyReadyRef.current) {
+        companyAudio.currentTime = 0;
+        const p = companyAudio.play();
+        if (p && typeof p.catch === "function") p.catch(() => { /* wait for a gesture */ });
+        return;
+      }
+      main.currentTime = 0;
+      const p = main.play();
+      if (p && typeof p.catch === "function") p.catch(() => { /* blocked until a gesture — keep waiting */ });
+    }
+    const gestureAttempt = () => attempt(true);
+
     function removeGestureListeners() {
-      window.removeEventListener("pointerdown", attempt);
-      window.removeEventListener("keydown", attempt);
-      window.removeEventListener("touchstart", attempt);
+      window.removeEventListener("pointerdown", gestureAttempt);
+      window.removeEventListener("keydown", gestureAttempt);
+      window.removeEventListener("touchstart", gestureAttempt);
     }
 
     if (!alreadyWelcomed) {
-      attempt(); // browsers that allow autoplay play right away
-      window.addEventListener("pointerdown", attempt);
-      window.addEventListener("keydown", attempt);
-      window.addEventListener("touchstart", attempt, { passive: true });
+      attempt(false); // browsers that allow autoplay play right away
+      window.addEventListener("pointerdown", gestureAttempt);
+      window.addEventListener("keydown", gestureAttempt);
+      window.addEventListener("touchstart", gestureAttempt, { passive: true });
     }
 
     return () => {
       removeGestureListeners();
-      audio.removeEventListener("playing", onPlaying);
-      audio.removeEventListener("timeupdate", onTime);
-      audio.removeEventListener("ended", onEnded);
-      audio.removeEventListener("pause", onPause);
-      audio.pause();
+      main.removeEventListener("playing", onPlaying);
+      main.removeEventListener("timeupdate", onMainTime);
+      main.removeEventListener("ended", onEnded);
+      main.removeEventListener("pause", onPause);
+      main.pause();
+      if (companyAudio) {
+        companyAudio.removeEventListener("ended", onCompanyEnded);
+        companyAudio.pause();
+      }
     };
   }, []);
 
   function toggleReplay() {
-    const a = audioRef.current;
-    if (!a) return;
-    if (!a.paused) {
-      a.pause();
-      a.currentTime = 0;
+    const main = mainRef.current;
+    const company = companyRef.current;
+    if (!main) return;
+    const anyPlaying = !main.paused || (company && !company.paused);
+    if (anyPlaying) {
+      main.pause();
+      main.currentTime = 0;
+      if (company) {
+        company.pause();
+        company.currentTime = 0;
+      }
+      setPlaying(false);
       setSubtitle(null);
       return;
     }
-    a.currentTime = 0;
-    void a.play().catch(() => {});
+    attachVoiceAnalyser(main);
+    if (company) attachVoiceAnalyser(company);
+    if (company && companyReadyRef.current) {
+      company.currentTime = 0;
+      void company.play().catch(() => {});
+      return;
+    }
+    main.currentTime = 0;
+    void main.play().catch(() => {});
   }
 
   return (

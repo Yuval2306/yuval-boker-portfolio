@@ -2,6 +2,7 @@ import { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
+import { voice } from "../lib/voiceLevel";
 
 function Starfield({ count = 2600 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null!);
@@ -19,7 +20,8 @@ function Starfield({ count = 2600 }: { count?: number }) {
   }, [count]);
 
   useFrame((_, delta) => {
-    ref.current.rotation.y += delta * 0.02;
+    // the starfield spins faster while the narrator speaks
+    ref.current.rotation.y += delta * (0.02 + voice.level * 0.25);
     ref.current.rotation.x += delta * 0.004;
   });
 
@@ -45,15 +47,22 @@ function Core() {
   const knot = useRef<THREE.Mesh>(null!);
   const inner = useRef<THREE.Mesh>(null!);
   const halo = useRef<THREE.Mesh>(null!);
+  const knotMat = useRef<THREE.MeshStandardMaterial>(null!);
+  const innerMat = useRef<THREE.MeshStandardMaterial>(null!);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
-    knot.current.rotation.x += delta * 0.12;
-    knot.current.rotation.y += delta * 0.18;
-    inner.current.rotation.y -= delta * 0.35;
+    const v = voice.level; // 0..1 — pulses with the narrator's voice
+    knot.current.rotation.x += delta * (0.12 + v * 0.6);
+    knot.current.rotation.y += delta * (0.18 + v * 0.8);
+    knot.current.scale.setScalar(1 + v * 0.18);
+    inner.current.rotation.y -= delta * (0.35 + v * 1.5);
     inner.current.rotation.z += delta * 0.1;
-    inner.current.scale.setScalar(1 + Math.sin(t * 1.4) * 0.06);
+    inner.current.scale.setScalar(1 + Math.sin(t * 1.4) * 0.06 + v * 0.55);
     halo.current.rotation.z += delta * 0.05;
+    halo.current.scale.setScalar(1 + v * 0.25);
+    if (knotMat.current) knotMat.current.emissiveIntensity = 0.7 + v * 2.5;
+    if (innerMat.current) innerMat.current.emissiveIntensity = 1.4 + v * 4;
   });
 
   return (
@@ -61,6 +70,7 @@ function Core() {
       <mesh ref={knot}>
         <torusKnotGeometry args={[2.1, 0.62, 220, 28]} />
         <meshStandardMaterial
+          ref={knotMat}
           color="#3b82f6"
           wireframe
           emissive="#1d4ed8"
@@ -72,6 +82,7 @@ function Core() {
       <mesh ref={inner}>
         <icosahedronGeometry args={[0.95, 1]} />
         <meshStandardMaterial
+          ref={innerMat}
           color="#22d3ee"
           wireframe
           emissive="#0891b2"

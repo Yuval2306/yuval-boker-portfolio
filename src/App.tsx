@@ -26,6 +26,7 @@ import { Lanyard } from "./components/Lanyard";
 import { LiveCursors } from "./components/LiveCursors";
 import { HoopsGame } from "./components/HoopsGame";
 import { WelcomeGreeting } from "./components/WelcomeGreeting";
+import { getCompanyFromUrl } from "./lib/company";
 
 const Hero3D = lazy(() => import("./components/Hero3D"));
 
@@ -33,6 +34,7 @@ export default function App() {
   const [open, setOpen] = useState<null | "about-en" | "about-he" | "contact" | "resume" | "skills">(null);
   const [hoopsOpen, setHoopsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const company = useMemo(getCompanyFromUrl, []);
 
   useEffect(() => {
     setMounted(true);
@@ -123,7 +125,7 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
             </div>
 
             <p data-fall className="mt-8 text-blue-200/90 text-xl md:text-2xl font-medium" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.45s both" }}>
-              👋 Hey, I'm
+              {company ? `👋 Hey ${company} team, I'm` : "👋 Hey, I'm"}
             </p>
 
             <div data-fall className="mt-2 w-full" style={{ animation: "fadeInUp 1s cubic-bezier(0.16,1,0.3,1) 0.6s both" }}>
