@@ -25,6 +25,7 @@ import { CursorGlow } from "./components/CursorGlow";
 import { Lanyard } from "./components/Lanyard";
 import { LiveCursors } from "./components/LiveCursors";
 import { HoopsGame } from "./components/HoopsGame";
+import { WelcomeGreeting } from "./components/WelcomeGreeting";
 
 const Hero3D = lazy(() => import("./components/Hero3D"));
 
@@ -94,7 +95,11 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
       <CursorGlow />
       <LiveCursors />
       <Lanyard />
+      <WelcomeGreeting />
       <TechBackground />
+
+      {/* theme-scope: everything inside flips colors in day mode */}
+      <div className="theme-scope">
 
       {/* ===== 3D HERO ===== */}
       <section className="relative h-screen w-full overflow-hidden">
@@ -233,28 +238,6 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
           </div>
         </section>
 
-        {/* floating basketball button */}
-        <button
-          onClick={() => setHoopsOpen(true)}
-          className="fixed bottom-6 right-6 z-[90] text-6xl leading-none drop-shadow-[0_0_18px_rgba(249,115,22,0.5)] hover:scale-110 hover:rotate-[25deg] hover:drop-shadow-[0_0_28px_rgba(249,115,22,0.8)] transition-all animate-bounce-gentle"
-          title="Shoot some hoops"
-          aria-label="Play basketball mini game"
-        >
-          🏀
-        </button>
-
-        {hoopsOpen && <HoopsGame onClose={() => setHoopsOpen(false)} />}
-
-        {open && (
-          <Modal onClose={() => setOpen(null)}>
-            {open === "about-en" && <div className="prose prose-invert"><h3 className="text-3xl font-bold mb-6 text-blue-400">About Me</h3><p className="whitespace-pre-line leading-relaxed text-slate-300 text-lg">{aboutEN}</p></div>}
-            {open === "about-he" && <div className="prose prose-invert text-right" dir="rtl"><h3 className="text-3xl font-bold mb-6 text-blue-400">קצת עליי</h3><p className="whitespace-pre-line leading-relaxed text-slate-300 text-lg">{aboutHE}</p></div>}
-            {open === "contact" && <ContactContent email={email} phone={phone} whatsapp={whatsapp} />}
-            {open === "resume" && <ExperienceContent />}
-            {open === "skills" && <SkillsSearch skills={skills} />}
-          </Modal>
-        )}
-
         <footer data-fall className="mt-32 pb-12 text-center space-y-3">
           <div className="flex justify-center gap-4">
             <a href={githubUrl} target="_blank" rel="noreferrer" className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:border-blue-500/40 hover:bg-blue-600/10 transition-all"><Github size={18} /></a>
@@ -269,6 +252,30 @@ Fun fact: I'm a massive sports enthusiast (Tennis, Basketball, Gym). If you want
           </div>
         </footer>
       </div>
+
+      </div>{/* /theme-scope */}
+
+      {/* floating basketball button */}
+      <button
+        onClick={() => setHoopsOpen(true)}
+        className="fixed bottom-6 right-6 z-[90] text-6xl leading-none drop-shadow-[0_0_18px_rgba(249,115,22,0.5)] hover:scale-110 hover:rotate-[25deg] hover:drop-shadow-[0_0_28px_rgba(249,115,22,0.8)] transition-all animate-bounce-gentle"
+        title="Shoot some hoops"
+        aria-label="Play basketball mini game"
+      >
+        🏀
+      </button>
+
+      {hoopsOpen && <HoopsGame onClose={() => setHoopsOpen(false)} />}
+
+      {open && (
+        <Modal onClose={() => setOpen(null)}>
+          {open === "about-en" && <div className="prose prose-invert"><h3 className="text-3xl font-bold mb-6 text-blue-400">About Me</h3><p className="whitespace-pre-line leading-relaxed text-slate-300 text-lg">{aboutEN}</p></div>}
+          {open === "about-he" && <div className="prose prose-invert text-right" dir="rtl"><h3 className="text-3xl font-bold mb-6 text-blue-400">קצת עליי</h3><p className="whitespace-pre-line leading-relaxed text-slate-300 text-lg">{aboutHE}</p></div>}
+          {open === "contact" && <ContactContent email={email} phone={phone} whatsapp={whatsapp} />}
+          {open === "resume" && <ExperienceContent />}
+          {open === "skills" && <SkillsSearch skills={skills} />}
+        </Modal>
+      )}
     </div>
   );
 }
@@ -465,7 +472,7 @@ function TopLinkCard({ title, subtitle, href, icon, index }: any) {
 
 function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 backdrop-blur-md bg-black/60" onMouseDown={onClose}>
+    <div className="day-self fixed inset-0 z-[100] flex items-center justify-center p-6 backdrop-blur-md bg-black/60" onMouseDown={onClose}>
       <div className="relative max-w-3xl w-full bg-[#0a0f1e] border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl animate-modalEnter" onMouseDown={e => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-8 right-8 text-slate-500 hover:text-white transition-colors text-2xl">✕</button>
         {children}
@@ -520,7 +527,7 @@ function SkillsSearch({ skills }: { skills: string[] }) {
 
 function TechBackground() {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden bg-[#020617]">
+    <div className="day-self fixed inset-0 -z-10 overflow-hidden bg-[#020617]">
       <div className="absolute top-[-10%] left-[-10%] h-[800px] w-[800px] rounded-full bg-blue-600/10 blur-[120px] animate-pulse" />
       <div className="absolute bottom-[-10%] right-[-10%] h-[700px] w-[700px] rounded-full bg-cyan-500/10 blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
       <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: `radial-gradient(rgba(59, 130, 246, 0.4) 1px, transparent 0)`, backgroundSize: '40px 40px' }} />

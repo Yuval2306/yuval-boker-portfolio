@@ -1,0 +1,37 @@
+[
+  {
+    "start": 0.1,
+    "end": 4.46,
+    "text": "Welcome... to the portfolio of Yuval Boker."
+  },
+  {
+    "start": 4.01,
+    "end": 9.98,
+    "text": "Here you'll find his story, his experience, and the projects he has built."
+  },
+  {
+    "start": 9.58,
+    "end": 17.91,
+    "text": "Scroll down to explore the featured work, try the interactive terminal, or shoot some hoops in the basketball game."
+  },
+  {
+    "start": 17.51,
+    "end": 23.58,
+    "text": "Just do me a favor... don't type sudo R M dash R F in the terminal."
+  },
+  {
+    "start": 23.18,
+    "end": 25.69,
+    "text": "It crashes me."
+  },
+  {
+    "start": 25.29,
+    "end": 29.62,
+    "text": "If you like what you see, feel free to reach out."
+  },
+  {
+    "start": 29.22,
+    "end": 33.08,
+    "text": "Yuval would be happy to introduce himself."
+  }
+]

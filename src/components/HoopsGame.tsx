@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { X, Play, RotateCcw, Timer, Trophy } from "lucide-react";
+import { X, Play, RotateCcw, Timer, Trophy, Crown } from "lucide-react";
 import { burstConfetti } from "../lib/confetti";
+import { supabase } from "../lib/supabase";
 
 // "Shoot to Hire" — a real 2-minute timed basketball game.
 // Rapid fire: a fresh ball is always waiting at the spawn point.
@@ -56,6 +57,44 @@ export function HoopsGame({ onClose }: { onClose: () => void }) {
   phaseRef.current = phase;
   const scoreRef = useRef(0);
   scoreRef.current = score;
+
+  // global leaderboard (Supabase)
+  const [leaders, setLeaders] = useState<Array<{ name: string; score: number }> | null>(null);
+  const [lbOffline, setLbOffline] = useState(false);
+  const [playerName, setPlayerName] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  async function fetchLeaders() {
+    try {
+      const { data, error } = await supabase
+        .from("hoops_scores")
+        .select("name,score")
+        .order("score", { ascending: false })
+        .limit(5);
+      if (error) throw error;
+      setLeaders(data ?? []);
+      setLbOffline(false);
+    } catch {
+      setLbOffline(true);
+    }
+  }
+
+  useEffect(() => {
+    if (phase === "over") {
+      setSubmitted(false);
+      void fetchLeaders();
+    }
+  }, [phase]);
+
+  async function submitScore() {
+    const n = playerName.trim().slice(0, 14);
+    if (!n || submitted || scoreRef.current <= 0) return;
+    setSubmitted(true);
+    try {
+      await supabase.from("hoops_scores").insert({ name: n, score: scoreRef.current });
+      await fetchLeaders();
+    } catch { /* leaderboard offline — local best still saved */ }
+  }
 
   // countdown
   useEffect(() => {
@@ -375,20 +414,72 @@ export function HoopsGame({ onClose }: { onClose: () => void }) {
 
           {/* game over overlay */}
           {phase === "over" && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-slate-950/85 backdrop-blur-sm">
-              <div className="text-4xl mb-2">⏱</div>
-              <h4 className="text-3xl font-black text-white mb-1">Time's up!</h4>
-              <div className="text-5xl font-black text-cyan-300 my-3">{score} pts</div>
-              <p className="text-slate-400 text-sm mb-1">{shots} shots · {accuracy}% efficiency{score >= best && score > 0 ? " · 🏆 NEW RECORD" : ""}</p>
-              <p className="text-slate-300 font-bold mb-6">
-                {score >= 40 ? "🔥 NBA material. Also: hired." : score >= 20 ? "Solid game! Imagine what we'd build together." : score > 0 ? "Not bad! Debugging takes practice too 😉" : "Airball... but hey, my code always hits 😄"}
-              </p>
-              <button
-                onClick={startGame}
-                className="flex items-center gap-2 px-8 py-3 rounded-full bg-orange-500 hover:bg-orange-400 text-white font-black hover:scale-105 transition-all shadow-[0_0_30px_rgba(249,115,22,0.4)]"
-              >
-                <RotateCcw size={18} /> PLAY AGAIN
-              </button>
+            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-slate-950/90 backdrop-blur-sm p-4">
+              <div className="flex flex-col sm:flex-row items-center gap-6 w-full max-w-xl">
+                {/* result */}
+                <div className="flex-1 text-center">
+                  <h4 className="text-2xl font-black text-white">Time's up! ⏱</h4>
+                  <div className="text-5xl font-black text-cyan-300 my-2">{score} pts</div>
+                  <p className="text-slate-400 text-xs mb-1">{shots} shots · {accuracy}% efficiency{score >= best && score > 0 ? " · 🏆 NEW RECORD" : ""}</p>
+                  <p className="text-slate-300 text-sm font-bold mb-4">
+                    {score >= 40 ? "🔥 NBA material. Also: hired." : score >= 20 ? "Solid game! Imagine what we'd build together." : score > 0 ? "Not bad! Debugging takes practice too 😉" : "Airball... but hey, my code always hits 😄"}
+                  </p>
+
+                  {score > 0 && !submitted && !lbOffline && (
+                    <div className="flex gap-2 justify-center mb-3">
+                      <input
+                        value={playerName}
+                        onChange={(e) => setPlayerName(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && submitScore()}
+                        maxLength={14}
+                        placeholder="Your name..."
+                        className="w-36 rounded-xl bg-slate-900 border border-white/15 px-3 py-2 text-sm outline-none focus:border-cyan-500/50 transition-colors"
+                      />
+                      <button
+                        onClick={submitScore}
+                        className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-sm font-black transition-colors"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  )}
+                  {submitted && <p className="text-emerald-400 text-xs font-bold mb-3">Score submitted! 🎉</p>}
+
+                  <button
+                    onClick={startGame}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-orange-500 hover:bg-orange-400 text-white font-black hover:scale-105 transition-all shadow-[0_0_30px_rgba(249,115,22,0.4)]"
+                  >
+                    <RotateCcw size={16} /> PLAY AGAIN
+                  </button>
+                </div>
+
+                {/* leaderboard */}
+                <div className="w-full sm:w-52 rounded-2xl bg-slate-900/70 border border-white/10 p-4">
+                  <div className="flex items-center gap-2 text-amber-300 font-black text-sm mb-3">
+                    <Crown size={15} /> HALL OF FAME
+                  </div>
+                  {lbOffline && <p className="text-slate-500 text-xs">Leaderboard is offline right now — your best is saved on this device.</p>}
+                  {!lbOffline && leaders === null && <p className="text-slate-500 text-xs">Loading...</p>}
+                  {!lbOffline && leaders !== null && leaders.length === 0 && (
+                    <p className="text-slate-500 text-xs">No scores yet — be the first!</p>
+                  )}
+                  {!lbOffline && leaders !== null && leaders.length > 0 && (
+                    <ol className="space-y-1.5">
+                      {leaders.map((l, i) => (
+                        <li key={i} className="flex items-center justify-between text-sm">
+                          <span className="text-slate-300 truncate">
+                            <span className={`font-black mr-1.5 ${i === 0 ? "text-amber-300" : i === 1 ? "text-slate-300" : i === 2 ? "text-orange-400" : "text-slate-600"}`}>
+                              {i + 1}.
+                            </span>
+                            {l.name}
+                          </span>
+                          <span className="font-mono font-bold text-cyan-300">{l.score}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </div>
+              </div>
             </div>
           )}
         </div>
