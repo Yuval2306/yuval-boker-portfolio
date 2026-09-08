@@ -25,7 +25,7 @@ export function WelcomeGreeting() {
   const mainRef = useRef<HTMLAudioElement | null>(null);
   const companyRef = useRef<HTMLAudioElement | null>(null);
   const companyNameRef = useRef<string | null>(null);
-  const companyReadyRef = useRef(false);
+  const companyFailedRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -43,8 +43,7 @@ export function WelcomeGreeting() {
       companyAudio = new Audio(`/intro/${companySlug(company)}.mp3`);
       companyAudio.preload = "auto";
       companyAudio.volume = 1;
-      companyAudio.addEventListener("canplaythrough", () => { companyReadyRef.current = true; }, { once: true });
-      companyAudio.addEventListener("error", () => { companyReadyRef.current = false; });
+      companyAudio.addEventListener("error", () => { companyFailedRef.current = true; });
       companyRef.current = companyAudio;
     }
 
@@ -120,10 +119,18 @@ export function WelcomeGreeting() {
         if (companyAudio) attachVoiceAnalyser(companyAudio);
       }
       if (!main.paused || (companyAudio && !companyAudio.paused)) return;
-      if (companyAudio && companyReadyRef.current) {
+      if (companyAudio && !companyFailedRef.current) {
         companyAudio.currentTime = 0;
         const p = companyAudio.play();
-        if (p && typeof p.catch === "function") p.catch(() => { /* wait for a gesture */ });
+        if (p && typeof p.catch === "function") {
+          p.catch((e: unknown) => {
+            // NotAllowed = wait for a gesture; anything else (bad file) = use the main narration
+            if (!(e instanceof DOMException && e.name === "NotAllowedError")) {
+              companyFailedRef.current = true;
+              attempt(fromGesture);
+            }
+          });
+        }
         return;
       }
       main.currentTime = 0;
@@ -177,7 +184,7 @@ export function WelcomeGreeting() {
     }
     attachVoiceAnalyser(main);
     if (company) attachVoiceAnalyser(company);
-    if (company && companyReadyRef.current) {
+    if (company && !companyFailedRef.current) {
       company.currentTime = 0;
       void company.play().catch(() => {});
       return;
@@ -190,6 +197,7 @@ export function WelcomeGreeting() {
     <>
       <button
         onClick={toggleReplay}
+        onPointerDown={(e) => e.stopPropagation()}
         className={`fixed top-6 left-6 z-[95] h-12 w-12 rounded-full border backdrop-blur-xl text-xl leading-none transition-all hover:scale-110 ${
           playing
             ? "bg-cyan-500/20 border-cyan-400/50 shadow-[0_0_25px_rgba(34,211,238,0.4)]"
